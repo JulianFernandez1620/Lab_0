@@ -9,12 +9,30 @@ class user_connection():
             print(err)
             self.conn.close()
 
+    # Primera Sentencia CRUD
+
+    def read_all(self):
+        with self.conn.cursor() as cur:
+            data = cur.execute("""
+                SELECT * FROM "user"
+            """)
+            return data.fetchall()
+        self.conn.commit()
+
+    def read_one(self, id):
+        with self.conn.cursor() as cur:
+            data = cur.execute("""
+                SELECT * FROM "user" WHERE id = %s
+            """,(id,))
+            return data.fetchone()
+        self.conn.commit()
+
     def write(self, data):
         with self.conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO "user"(name, phone) VALUES(%(name)s, %(phone)s)
             """, data)
-        self.commit()    
+        self.conn.commit()    
 
     def __def__(self):
         self.conn.close()

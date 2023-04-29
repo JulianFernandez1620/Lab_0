@@ -7,9 +7,26 @@ conn = user_connection()
 
 @app.get("/")
 def root():
-    conn
-    return "Welcome back Sir"
+    items = []
+    for data in conn.read_all():
+        dictionary = {}
+        dictionary["id"] = data[0]
+        dictionary["name"] = data[1]
+        dictionary["phone"] = data[2]
+        items.append(dictionary)
+    return items
+
+@app.get("/api/user/{id}")
+def read_one(id:str):
+    dictionary = {}
+    data = conn.read_one(id)
+    dictionary["id"] = data[0]
+    dictionary["name"] = data[1]
+    dictionary["phone"] = data[2]
+    return dictionary
 
 @app.post("/insert/usuario")
 def insert(user_data: user_schema):
-    print(user_data)
+    data = user_data.dict()
+    data.pop("id")
+    conn.write(data)
