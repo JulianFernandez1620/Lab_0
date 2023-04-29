@@ -32,7 +32,21 @@ class user_connection():
             cur.execute("""
                 INSERT INTO "user"(name, phone) VALUES(%(name)s, %(phone)s)
             """, data)
-        self.conn.commit()    
+        self.conn.commit()
+
+    def update(self, data):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+                UPDATE "user" SET name = %(name)s, phone = %(phone)s WHERE id = %(id)s
+            """, data)
+        self.conn.commit()
+
+    def delete(self, id):
+        with self.conn.cursor() as cur:
+            cur.execute(""" 
+                DELETE FROM "user" WHERE id = %s
+            """,(id,))   
+        self.conn.commit()
 
     def __def__(self):
         self.conn.close()

@@ -30,3 +30,13 @@ def insert(user_data: user_schema):
     data = user_data.dict()
     data.pop("id")
     conn.write(data)
+
+@app.delete("/api/delete/{id}")
+def delete(id:str):
+    conn.delete(id)
+
+@app.put("/api/update/{id}")
+def update(user_data:user_schema , id:str):
+    data = user_data.dict()
+    data["id"] = id
+    conn.update(data)
